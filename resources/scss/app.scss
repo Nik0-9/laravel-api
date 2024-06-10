@@ -1,0 +1,30 @@
+@use './partials/_variables.scss' as *;
+
+$fa-font-path: "../webfonts" !default;
+
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+
+#admin {
+    #sidebar {
+        height: 100vh;
+    }
+
+    #wrapper {
+        flex-grow: 1;
+        height: 100vh;
+        overflow-y: auto;
+
+        header {
+            min-height: 80px;
+            .img-profile {
+                height: 2rem;
+            }
+        }
+    }
+}

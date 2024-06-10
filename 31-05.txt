@@ -1,0 +1,90 @@
+31-05:
+ $table->string('image', 255)->nullable()->after('title');
+in ProjectModel aggiungere image alla var $fillable;
+
+copiare layouts app.blade in folder layouts and rename admin.blade;
+    change div id app iin id admin
+
+    in folder admin projects all file must have  @extends layout ('admin') 
+
+index
+@extends('layouts.admin')
+@section('title', 'Posts')
+
+@section('content')
+<section>
+    @if(session()->has('message'))
+    <div class="alert alert-success">{{session()->get('message')}}</div>
+    @endif
+    <div class="d-flex justify-content-between align-items-center py-4">
+        <h1>Posts</h1>
+        <a href="{{route('admin.posts.create')}}" class="btn btn-primary">Crea nuovo post</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Title</th>
+              <th scope="col">Slug</th>
+              <th scope="col">Created At</th>
+              <th scope="col">Update At</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($posts as $post)
+            <tr>
+                <td>{{$post->id}}</td>
+                <td>{{$post->title}}</td>
+                <td>{{$post->slug}}</td>
+                <td>{{$post->created_at}}</td>
+                <td>{{$post->updated_at}}</td>
+                <td>
+                    <a href="{{route('admin.posts.show', $post->slug)}}"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{route('admin.posts.edit', $post->slug)}}"><i class="fa-solid fa-pen"></i></a>
+                    <form action="{{route('admin.posts.destroy', $post->slug)}}" method="POST">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+
+                    </form>
+
+
+                </td>
+              </tr>
+            @endforeach
+
+
+          </tbody>
+      </table>
+</section>
+@endsection
+
+
+public function store(Request $request)
+    {
+        $form_data = $request->all();
+        $form_data['slug'] = Post::generateSlug($form_data['title']);
+        $newPost = Post::create($form_data);
+        return redirect()->route('admin.posts.show', $newPost->slug);
+
+    }
+
+     public function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect()->route('admin.posts.index')->with('message', $post->title . ' è stato eliminato');
+    }
+
+03-06;
+use Illuminate\Support\Facades\DB;
+DB::enableQueryLog();
+        $post->update($form_data);
+        $query = DB::getQueryLog();
+        dd($query);
+
+        php artisan vendor:publish --tag=laravel-pagination
+php artisan vendor:publish --tag=laravel-errors
