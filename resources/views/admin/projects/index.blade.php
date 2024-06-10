@@ -19,6 +19,7 @@
         <th scope="col">Id</th>
         <th scope="col">Title</th>
         <th scope="col">Slug</th>
+        <th scope="col">Type</th>
         <th scope="col">Created At</th>
         <th scope="col">Update At</th>
         <th scope="col">Action</th>
@@ -30,6 +31,7 @@
       <td>{{$project->id}}</td>
       <td>{{$project->title}}</td>
       <td>{{$project->slug}}</td>
+      <td>{{ $project->type ? $project->type->name : 'N/A' }}</td>
       <td>{{$project->created_at}}</td>
       <td>{{$project->updated_at}}</td>
       <td>
@@ -58,5 +60,6 @@
     </tbody>
   </table>
 </section>
+{{ $projects->links('vendor.pagination.bootstrap-5') }}
 @include('admin.partials.modal-delete')
 @endsection

@@ -5,7 +5,7 @@
 @section('content')
 <section>
     <h2>Edit projects</h2>
-    <form action="{{ route('admin.projects.update', $project->slug) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.projects.update', $project, $project->slug) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -45,6 +45,19 @@
                 <option value="{{$type->id}}" {{ $project->id == old('type_id') ? 'selected' : '' }}>{{$type->name}}</option>
             @endforeach
         </select>
+        <div class="form-group mb-3">
+                <p>Select technology:</p>
+                @foreach ($technologies as $technology)
+                    <div>
+                        <input type="checkbox" name="technologies[]" value="{{ $technology->id }}" class="form-check-input"
+                            {{ $project->technologies->contains($technology->id) ? 'checked' : '' }}>
+                        <label for="technologies[]" class="form-check-label">{{ $technology->name }}</label>
+                    </div>
+                @endforeach
+                @error('technologys')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Send</button>
             <button type="reset" class="btn btn-secondary">Reset</button>
@@ -52,4 +65,9 @@
         </div>
     </form>
 </section>
+<script type="text/javascript" src="//js.nicedit.com/nicEdit-latest.js"></script> 
+  <script type="text/javascript">
+ 
+        bkLib.onDomLoaded{ nicEditors.allTextAreas() };
+  </script>
 @endsection

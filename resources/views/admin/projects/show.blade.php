@@ -3,25 +3,27 @@
 
 @section('content')
 <section>
-    @if(session()->has('message'))
+  @if(session()->has('message'))
     <div class="alert alert-success">{{session()->get('message')}}</div>
   @endif
+  <div class="d-flex justify-content-between align-items-center py-4">
     <h1>{{$project->title}}</h1>
-
-    <p>{{$project->content}}</p>
-    @if($project->image)
-    <img src="{{asset('storage/'.$project->image)}}" alt="{{$project->title}}">
-    @endif
-    <img src="/img/user.webp" alt="{{$project->title}}" class="w-25">
-    @if ($project->type)
-    <p>tipo:{{$project->type->name}}</p>
-    @endif
-    @if ($project->tags)
-    Tag:
-    @foreach ($project->tags as $tag)
-    <p>{{$tag->name}}</p>
-    
-    @endforeach
-    @endif
+    <a href="{{route('admin.projects.edit', $project->slug)}}" class="btn btn-primary">Edit project</a>
+  </div>
+  <p>{!!$project->content!!}</p>
+  @if($project->image)
+    <img src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}">
+  @endif
+  <img src="/img/user.webp" alt="{{$project->title}}" class="w-25">
+  @if ($project->type)
+    <p>tipo:{{$project->type->slug}}</p>
+  @endif
+  <div>
+    @if($project->technologies)
+    @foreach ($project->technologies as $technology)
+    <span class="badge text-bg-danger">{{$technology->name}}</span>
+  @endforeach
+  @endif
+  </div>
 </section>
 @endsection

@@ -17,7 +17,7 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Title</th>
+        <th scope="col">Name</th>
         <th scope="col">Slug</th>
         <th scope="col">Created At</th>
         <th scope="col">Update At</th>
@@ -28,7 +28,7 @@
       @foreach ($types as $type)
       <tr>
       <td>{{$type->id}}</td>
-      <td>{{$type->title}}</td>
+      <td>{{$type->name}}</td>
       <td>{{$type->slug}}</td>
       <td>{{$type->created_at}}</td>
       <td>{{$type->updated_at}}</td>

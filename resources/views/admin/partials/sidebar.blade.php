@@ -17,7 +17,7 @@
           <a class="nav-link  text-white {{Route::currentRouteName() == 'admin.types' ? 'active' : ''}}" href="{{route('admin.types.index')}}"> <i class="fa-solid fa-newspaper fa-lg fa-fw"></i>types</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  text-white {{Route::currentRouteName() == 'admin.tags' ? 'active' : ''}}" href="{{route('admin.tags.index')}}"> <i class="fa-solid fa-tags fa-lg fa-fw"></i>Tags</a>
+          <a class="nav-link  text-white {{Route::currentRouteName() == 'admin.tecnologies' ? 'active' : ''}}" href="{{route('admin.technologies.index')}}"> <i class="fa-solid fa-newspaper fa-lg fa-fw"></i>Tecnologies</a>
         </li>
 
       </ul>

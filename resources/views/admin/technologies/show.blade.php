@@ -1,12 +1,12 @@
 @extends('layouts.admin')
-@section('title', $type->title)
+@section('title', $technology->name)
 
 @section('content')
 <section>
     @if(session()->has('message'))
     <div class="alert alert-success">{{session()->get('message')}}</div>
   @endif
-    <h1>{{$type->name}}</h1>
+    <h1>{{$technology->name}}</h1>
 
     <table class="table table-striped">
     <thead>
@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($type->projects as $project)
+      @foreach ($technology->projects as $project)
       <tr>
       <td>{{$project->id}}</td>
       <td>{{$project->title}}</td>
@@ -38,7 +38,7 @@
         <form action="{{route('admin.projects.destroy', $project->slug)}}" method="POST">
           @csrf
           @method('DELETE')
-          <button type="submit" class="delete-button btn fs-6 p-0" data-item-title="{{$type->name}}">
+          <button type="submit" class="delete-button btn fs-6 p-0" data-item-title="{{$technology->name}}">
           <i class="fa-solid fa-trash" style="color: #0A58CA;"></i>
           </button>
 

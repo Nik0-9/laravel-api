@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Type;
-use App\Models\Tag;
-
-
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Validator; //Illuminate\Suppor\Facades\Validator
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 
 class ProjectController extends Controller
@@ -22,8 +19,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
-        return view('admin.projects.index', compact('projects'));
+        $projects = Project::paginate(10);
+        $types = Type::all();
+
+        return view('admin.projects.index', compact('projects','types'));
 
     }
 
@@ -33,8 +32,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        $tags = Tag::all();
-        return view('admin.projects.create', compact('types','tags'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types','technologies'));
     }
 
     /**
@@ -51,10 +51,9 @@ class ProjectController extends Controller
             $path = Storage::put('project_images', $request->image);
             $form_data['image'] = $path;
         }
-
         $newProject = Project::create($form_data);
-        if($request->has('tags')){
-            $newProject->tags()->attach($request->tags);
+        if($request->has('technologies')){
+            $newProject->technologies()->attach($request->technologies);
         }
         return redirect()->route('admin.projects.show', $newProject->slug)->with('message', $form_data['title'] . ' è stato creato');
 
@@ -74,9 +73,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        $tags = Tag::all();
+        $technologies = Technology::all();
 
-        return view('admin.projects.edit', compact('project','types','tag'));
+        return view('admin.projects.edit', compact('project','types','technologies'));
     }
 
     /**
@@ -85,7 +84,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         // $form_data = $request->all();
-        $form_data = $this->validationUpdate($request->all(),$project);
+        $form_data = $this->validationUpdate($request->all());
         if ($project->title !== $form_data['title']) {
             $form_data['slug'] = Project::generateSlug($form_data['title']);
         }
@@ -97,6 +96,11 @@ class ProjectController extends Controller
             $form_data['image'] = $path;
         }
         $project->update($form_data);
+        if($request->has('technologies')){
+            $project->technologies()->sync($request->technologies);
+        }else{
+            $project->technologies()->sync([]);
+        }
         return redirect()->route('admin.projects.show', compact('project'))->with('message', $project->title . ' è stato editato');
     }
 
@@ -126,22 +130,24 @@ class ProjectController extends Controller
                 ],
                 'image' => 'nullable|file|size:1024',
                 'content' => 'required',
-                'type_id' => 'nullable|exists:types,id'
+                'type_id' => 'nullable|exists:types,id',
+                'technology' => 'nullable|exists:tecnology,id'
+
             ],
             [
                 'title.required' => 'Campo obbligatorio',
                 'title.unique' => 'Progetto già esistente',
                 'title.max' => 'Il titolo deve avere :max caratteri',
                 'title.min' => 'Il titolo deve avere :min caratteri',
-                'image.max' => 'L\'immagine deve contenere :max caratteri',
+                'image.max' => 'L\'immagine non puo\' superare :size kilobytes',
                 'content.required' => 'Campo obbligatorio'
-            ]
-        )->validate();
-        return $validator;
-    }
-    public function validationUpdate($data,Project $project)
-    {
-        //dd($data);
+                ]
+                )->validate();
+                return $validator;
+            }
+            public function validationUpdate($data,Project $project)
+            {
+                //dd($data);
         $validator = Validator::make(
             $data,
             [
@@ -153,14 +159,15 @@ class ProjectController extends Controller
                 ],
                 'image' => 'nullable|file|size:1024',
                 'content' => 'required',
-                'type_id' => 'nullable|exists:types,id'
+                'type_id' => 'nullable|exists:types,id',
+                'technology' => 'nullable'
             ],
             [
                 'title.required' => 'Campo obbligatorio',
                 'title.unique' => 'Progetto già esistente',
                 'title.max' => 'Il titolo deve avere :max caratteri',
                 'title.min' => 'Il titolo deve avere :min caratteri',
-                'image.max' => 'L\'immagine deve contenere :max caratteri',
+                'image.max' => 'L\'immagine non puo\' superare :size kilobytes',
                 'content.required' => 'Campo obbligatorio'
             ]
         )->validate();

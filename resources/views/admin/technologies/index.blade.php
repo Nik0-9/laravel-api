@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Tags')
+@section('title', 'Technologies')
 
 @section('content')
 <section class="container">
@@ -7,9 +7,9 @@
     <div class="alert alert-success">{{session()->get('message')}}</div>
   @endif
   <div class="d-flex justify-content-between align-items-center py-4">
-    <h1>Types</h1>
-    <a href="{{route('admin.tags.create')}}" class="btn btn-primary">
-      Crea nuovo type
+    <h1>Technologies</h1>
+    <a href="{{route('admin.technologies.create')}}" class="btn btn-primary">
+      Crea nuova technology
     </a>
   </div>
 
@@ -17,7 +17,7 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Title</th>
+        <th scope="col">Name</th>
         <th scope="col">Slug</th>
         <th scope="col">Created At</th>
         <th scope="col">Update At</th>
@@ -25,25 +25,25 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($tags as $tag)
+      @foreach ($technologies as $technology)
       <tr>
-      <td>{{$tag->id}}</td>
-      <td>{{$tag->name}}</td>
-      <td>{{$tag->slug}}</td>
-      <td>{{$tag->created_at}}</td>
-      <td>{{$tag->updated_at}}</td>
+      <td>{{$technology->id}}</td>
+      <td>{{$technology->name}}</td>
+      <td>{{$technology->slug}}</td>
+      <td>{{$technology->created_at}}</td>
+      <td>{{$technology->updated_at}}</td>
       <td>
         <div class="d-flex align-items-center gap-2">
-        <a href="{{route('admin.tags.show', $tag->slug)}}">
+        <a href="{{route('admin.technologies.show', $technology->slug)}}">
           <i class="fa-solid fa-eye"></i>
         </a>
-        <a href="{{route('admin.tags.edit', $tag->slug)}}">
+        <a href="{{route('admin.technologies.edit', $technology->slug)}}">
           <i class="fa-solid fa-pen"></i>
         </a>
-        <form action="{{route('admin.tags.destroy', $tag->slug)}}" method="POST">
+        <form action="{{route('admin.technologies.destroy', $technology->slug)}}" method="POST">
           @csrf
           @method('DELETE')
-          <button type="submit" class="delete-button btn fs-6 p-0" data-item-title="{{$tag->id}}">
+          <button type="submit" class="delete-button btn fs-6 p-0" data-item-title="{{$technology->title}}">
           <i class="fa-solid fa-trash" style="color: #0A58CA;"></i>
           </button>
 
