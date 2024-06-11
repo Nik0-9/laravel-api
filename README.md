@@ -142,7 +142,7 @@ php artisan make:model Nome -msrc --requests
 
 #creo form request per validazione
 	
-php artisan make:request StoreMomemodelRequest
+php artisan make:request StoreNomemodelRequest
 
 #in app/Providers/RouteServiceProvider.php modifico
 public const HOME = '/admin';
