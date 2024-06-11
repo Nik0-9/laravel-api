@@ -13,8 +13,9 @@
   <p>{!!$project->content!!}</p>
   @if($project->image)
     <img src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}">
+  @else
+  <img src="/img/place-holder.jpg" alt="{{$project->title}}" class="w-25">
   @endif
-  <img src="/img/user.webp" alt="{{$project->title}}" class="w-25">
   @if ($project->type)
     <p>tipo:{{$project->type->slug}}</p>
   @endif

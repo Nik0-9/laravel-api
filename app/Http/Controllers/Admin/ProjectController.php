@@ -8,8 +8,9 @@ use App\Models\Type;
 use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Validator; //Illuminate\Suppor\Facades\Validator
-use Illuminate\Validation\Rule;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
+
 
 
 class ProjectController extends Controller
@@ -40,11 +41,11 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
 
         // $form_data = $request->all();
-        $form_data = $this->validationStore($request->all());
+        $form_data = $request->validated();
         $form_data['slug'] = Project::generateSlug($form_data['title']);
        
         if ($request->hasFile('image')) {
@@ -81,10 +82,10 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
         // $form_data = $request->all();
-        $form_data = $this->validationUpdate($request->all());
+        $form_data = $request->validated();
         if ($project->title !== $form_data['title']) {
             $form_data['slug'] = Project::generateSlug($form_data['title']);
         }
@@ -114,63 +115,5 @@ class ProjectController extends Controller
         }
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message', $project->title . ' è stato eliminato');
-    }
-
-
-    public function validationStore($data)
-    {
-        //dd($data);
-        $validator = Validator::make(
-            $data,
-            [
-                'title' => [
-                    'required',
-                    'max:200',
-                    'min:3',
-                ],
-                'image' => 'nullable|file|size:1024',
-                'content' => 'required',
-                'type_id' => 'nullable|exists:types,id',
-                'technology' => 'nullable|exists:tecnology,id'
-
-            ],
-            [
-                'title.required' => 'Campo obbligatorio',
-                'title.unique' => 'Progetto già esistente',
-                'title.max' => 'Il titolo deve avere :max caratteri',
-                'title.min' => 'Il titolo deve avere :min caratteri',
-                'image.max' => 'L\'immagine non puo\' superare :size kilobytes',
-                'content.required' => 'Campo obbligatorio'
-                ]
-                )->validate();
-                return $validator;
-            }
-            public function validationUpdate($data,Project $project)
-            {
-                //dd($data);
-        $validator = Validator::make(
-            $data,
-            [
-                'title' => [
-                    'required',
-                    'max:200',
-                    'min:3',
-                    Rule::unique('projects')->ignore($project->id)
-                ],
-                'image' => 'nullable|file|size:1024',
-                'content' => 'required',
-                'type_id' => 'nullable|exists:types,id',
-                'technology' => 'nullable'
-            ],
-            [
-                'title.required' => 'Campo obbligatorio',
-                'title.unique' => 'Progetto già esistente',
-                'title.max' => 'Il titolo deve avere :max caratteri',
-                'title.min' => 'Il titolo deve avere :min caratteri',
-                'image.max' => 'L\'immagine non puo\' superare :size kilobytes',
-                'content.required' => 'Campo obbligatorio'
-            ]
-        )->validate();
-        return $validator;
     }
 }
