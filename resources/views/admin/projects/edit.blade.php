@@ -29,7 +29,6 @@
             @error('image')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
-            <div id="imageHelp" class="form-text text-white">Inserire url dell'immagine</div>
         </div>
 
         <div class="mb-3">

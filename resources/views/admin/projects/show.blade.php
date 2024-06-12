@@ -12,7 +12,7 @@
   </div>
   <p>{!!$project->content!!}</p>
   @if($project->image)
-    <img src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}">
+    <img src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}" class="w-50" >
   @else
   <img src="/img/place-holder.jpg" alt="{{$project->title}}" class="w-25">
   @endif
