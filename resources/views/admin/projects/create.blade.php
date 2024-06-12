@@ -22,7 +22,7 @@
 
                 </div>
                 <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
-                    name="image" value="{{ old('image') }}" maxlength="255">
+                    name="image" value="{{ old('image') }}">
                 @error('image')
                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                 @enderror
