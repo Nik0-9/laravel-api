@@ -49,7 +49,10 @@ class ProjectController extends Controller
         $form_data['slug'] = Project::generateSlug($form_data['title']);
        
         if ($request->hasFile('image')) {
-            $path = Storage::put('project_images', $request->image);
+            $name = $request->image->getClientOriginalName(); //o il nome che volete dare al file
+            $path = $request->file('image')->storeAs('project_images', $name);
+            //$path = Storage::putFileAs('post_images', $request->image, $name);
+            //$path = Storage::put('post_images', $request->image);
             $form_data['image'] = $path;
         }
         $newProject = Project::create($form_data);
@@ -93,7 +96,8 @@ class ProjectController extends Controller
             if ($project->image) {
                 Storage::delete($project->image);
             }
-            $path = Storage::put('project_images', $request->image);
+            $name = $request->image->getClientOriginalName();
+            $path = $request->file('image')->storeAs('project_images', $name);
             $form_data['image'] = $path;
         }
         $project->update($form_data);

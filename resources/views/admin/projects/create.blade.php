@@ -18,7 +18,7 @@
             </div>
             <div class="mb-3">
                 <div class="media m3-3">
-                    <img id="upload_preview" src="/img/user.webp" class="w-50 mb-3">
+                    <img id="upload_preview" src="/img/place-holder.jpg" class="w-50 mb-3">
 
                 </div>
                 <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
